@@ -39,7 +39,7 @@ jobs:
       # Step 5: Build the Docker image using the Dockerfile from the infra repository
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/backend:latest -f deployment/dockerfile.backend ./backend
+          docker build -t ghcr.io/${{ github.repository }}/backend:latest -f deployment/Dockerfile.backend ./backend
 
       # Step 6: Push the Docker image to GHCR
       - name: Push Docker image to GHCR
