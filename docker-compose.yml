@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+  proxy:
+    build:
+      context: ..
+      dockerfile: ./infra/Dockerfile.nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: ./infra/Dockerfile.frontend
+    env_file:
+      - ./infra/env/${ENV_FILE:-dev.env}
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ..
+      dockerfile: ./infra/Dockerfile.backend
+    env_file:
+      - ./infra/env/${ENV_FILE:-dev.env}
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: shop
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
