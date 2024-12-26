@@ -13,6 +13,9 @@ jobs:
       # Step 1: Checkout the frontend repository (bicycle-shop-frontend)
       - name: Checkout frontend repository
         uses: actions/checkout@v4
+        with:
+          repository: ${{ github.actor }}/bicycle-shop-frontend
+          path: frontend
 
       # Step 2: Checkout the infra repository (bicycle-shop-deployment) to get the Dockerfile
       - name: Checkout infra repository
