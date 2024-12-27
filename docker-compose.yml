@@ -1,41 +1,40 @@
-version: "3.9"
 services:
   proxy:
     build:
       context: ..
-      dockerfile: ./infra/Dockerfile.nginx
+      dockerfile: ./Dockerfile.nginx
     ports:
       - "80:80"
     depends_on:
       - frontend
       - backend
     networks:
-      - app-network
+      - bicycle-shop-network
 
   frontend:
     build:
       context: ..
-      dockerfile: ./infra/Dockerfile.frontend
+      dockerfile: ./Dockerfile.frontend
     env_file:
-      - ./infra/env/${ENV_FILE:-dev.env}
+      - ./env/${ENV_FILE:-dev.env}
     networks:
-      - app-network
+      - bicycle-shop-network
     depends_on:
       - backend
 
   backend:
     build:
       context: ..
-      dockerfile: ./infra/Dockerfile.backend
+      dockerfile: ./Dockerfile.backend
     env_file:
-      - ./infra/env/${ENV_FILE:-dev.env}
+      - ./env/${ENV_FILE:-dev.env}
     depends_on:
       - db
     networks:
-      - app-network
+      - bicycle-shop-network
 
   db:
-    image: postgres:15
+    image: postgres:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -43,8 +42,8 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - app-network
+      - bicycle-shop-network
 
 networks:
-  app-network:
+  bicycle-shop-network:
     driver: bridge
